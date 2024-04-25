@@ -1,0 +1,47 @@
+---
+title: "projet_2_Aissatou"
+author: "Aissatou CISSE"
+date: "2024-04-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+#importation de la base
+#library(readxl) permet d'importer une base au format excel
+library(readxl)
+base_tp2 <- read_excel("C://Users//HP ELITEBOOK 840 G5//Desktop//dossier travail//cette année//second semestre//logiciel R//TP2_R//Base TP2.xlsx")
+View(base_tp2)# permet de voir la base
+dim(base_tp2)# donne le nombre de lignes et le nombre de colonnes
+```
+
+```{r}
+# labelisation
+library(expss)
+base_tp2=base_tp2%>%expss::apply_labels(sexe="Sexe", age="Age",
+                               sit_mat="situation matérimoniale",
+                               si_chef_men="Statut dans le ménage",
+                               ethnie="Ethnie", occupation="Occupation",
+                               formation="Formation",
+                               niveau_alphabs="Niveau d'alphabétisation",
+                               types_varietes="Quelles sont les variétés que vous utilisez pour la production de sesame?",
+                               criteres_var="Quelles sont les critères de choix des variétés de sesame?")
+View(base_tp2)
+```
+
+
+```{r}
+# recodage
+library(dplyr)
+base_tp2$sexe= dplyr::recode_factor(base_tp2$sexe,"1"="Homme", "2"="Femme")
+base_tp2$sit_mat= dplyr::recode_factor(base_tp2$sit_mat, "1"= "Marié(e)", "3"="Veuf(ve)", "4"="Divorcé(e)", "5"="Séparé(e)", "6"="célibataire")
+base_tp2$si_chef_men=dplyr::recode_factor(base_tp2$si_chef_men, "1"="femme du chef de ménage", "2"="chef de ménage", "3"="fils-fille du chef de ménage", "99"="Autres")
+base_tp2$occupation=dplyr::recode_factor(base_tp2$occupation, "1"="Agriculture,Elevage,Sylviculture,Pêche", "2"="Activités,extractive", "3"="Activités de fabrication", "4"="Activité de transformation", "5"="Production et distribution d'électricité et de gaz", "6"="Production et distribution d'eau, assainissement,traitement des déchets et dépollution")
+base_tp2$formation=dplyr::recode_factor(base_tp2$formation, "1"="Non scolarisé", "2"="Elémentaire", "3"="Moyen", "4"="Secondaire", "5"="Licence", "6"="master", "7"="Doctorat", "8"="Ne sait pas")
+base_tp2$niveau_alphabs=dplyr::recode_factor(base_tp2$niveau_alphabs, "1"="Sans niveau", "2"="Sait lire dans une langue", "3"="Sait lire et écrire dans une langue")
+base_tp2$types_varietes=dplyr::recode_factor(base_tp2$types_varietes, "1"="Traditionnelles", "2"="Améliorées")
+base_tp2$criteres_var=dplyr::recode_factor(base_tp2$criteres_var, "1"="rendements élevés", "2"="taille des graines", "3"="resistantes aux maladies/ravageurs", "4"="tolérantes aux sécheresse", "5"="Tolérantes aux inondations", "6"="Faible charge de travail", "7"="Faibles quantités d'intrants", "8"="facile à transformer", "9"="Haute teneur en huile", "10"="Haut rendement aprés transformation", "11"="Demande sur le marché", "12"="Bon goût", "13"="Belle couleur", "14"="Haut rendement en fourrages", "15"="Qualité du fourrage", "16"="autres à spécifier")
+```
+
